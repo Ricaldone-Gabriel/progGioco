@@ -67,7 +67,7 @@ public class PhysicsObject extends GameObject implements CollisionHandler {
                     accelerazione = 1f;
                     break;
                 case "ghiaccio":
-                    accelerazione = 0.25f;
+                    accelerazione = 0.10f;
                     break;
                 default:
                     accelerazione = 1f;
