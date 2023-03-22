@@ -17,4 +17,9 @@ public class Piattaforma extends GameObject {
         this.terreno = terreno;
     }
     
+    Piattaforma(int positionX, int positionY, int width, int height) {
+        super(positionX,positionY,width,height);
+        terreno = "terra";
+    }
+    
 }

@@ -23,12 +23,15 @@ public class GamePanel extends JPanel implements Runnable {
         papa = new Personaggio(100, 100, 50, 50, 1);
         Mondo = new LinkedList<Piattaforma>();
         this.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
-        this.setBackground(Color.black);
+        this.setBackground(new Color(230, 230, 255));
         this.addKeyListener(keyH);
         this.setFocusable(true);
         this.FPS = FPS;
 
         Mondo.add(new Piattaforma("terra", 100, 400, 250, 250));
+        Mondo.add(new Piattaforma("ghiaccio", 350, 500, 750, 200));
+        Mondo.add(new Piattaforma(350, 50, 250, 250));
+        Mondo.add(new Piattaforma("terra", 0, 750, 3000, 500));;
 
         if (FPS == 30) {
             numerone = 500000000;
@@ -72,15 +75,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        
-        
-        
 
-
-        /*Pezzo di codice sopra molto momentaneo
-        Idea per migliorarlo: Controllare se c'è una piattaforma sotto la X del papa
-         */
-        //Tutte le velocità adesso sono accelerazioni e decelerazioni.
         if (keyH.up) {
             if (papa.isGrounded) {
                 papa.velocityY = -20;
@@ -88,38 +83,65 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
         if (keyH.left) {
-            papa.velocityX = -3;
+            if (papa.velocityX > -4) {
+                papa.velocityX += -2;
+            }
         }
         if (keyH.down) {
             //papa.velocityY = 10;
             //Commentato perchè per adesso non serve a nulla.
         }
         if (keyH.right) {
-            papa.velocityX = 3;
+            if (papa.velocityX < 4) {
+                papa.velocityX += 2;
+            }
         }
-
+        if (keyH.shift) {
+            if (keyH.left) {
+                if (papa.velocityX > -6) {
+                    papa.velocityX += -2;
+                }
+            }
+            if (keyH.right) {
+                if (papa.velocityX < 6) {
+                    papa.velocityX += 2;
+                }
+            }
+        }
         papa.positionUpdate();
-        papa.checkCollision(Mondo.get(0));
-        papa.gravityUpdate();
-        
-        if (papa.velocityX > 0) {
-            papa.velocityX -= 1;
-        } else if (papa.velocityX < 0) {
-            papa.velocityX += 1;
+        for (int i = 0; i < Mondo.size(); i++) {
+            papa.checkCollision(Mondo.get(i));
         }
-        // QUA COSO CHE FA FUNZIONARE MODIFICALO COME VUOI
+        papa.gravityUpdate();
 
-        //Da provare: velocità in float
+        if (papa.velocityX > 0.5) {
+            papa.velocityX -= papa.accelerazione;
+        } else if (papa.velocityX < -0.5) {
+            papa.velocityX += papa.accelerazione;
+        } else {
+            papa.velocityX = 0;
+        }
+
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         //g.drawImage(new Image("background.jpg"), WIDTH, WIDTH, this);
-        g.setColor(Color.white);
+        g.setColor(Color.black);
         g.fillRect(papa.obj.x, papa.obj.y, papa.obj.width, papa.obj.height);
 
-        g.setColor(Color.yellow);
         for (int i = 0; i < Mondo.size(); i++) {
+            switch (Mondo.get(i).terreno) {
+                case "terra":
+                    g.setColor(new Color(205, 133, 63));
+                    break;
+                case "ghiaccio":
+                    g.setColor(new Color(173, 216, 230));
+                    break;
+                default:
+                    g.setColor(Color.red);
+                    break;
+            }
             g.fillRect((int) Mondo.get(i).obj.x, (int) Mondo.get(i).obj.y, (int) Mondo.get(i).obj.width, (int) Mondo.get(i).obj.height);
         }
         g.dispose();
