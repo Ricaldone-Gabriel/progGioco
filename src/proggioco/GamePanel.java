@@ -85,6 +85,8 @@ public class GamePanel extends JPanel implements Runnable {
         if (keyH.left) {
             if (papa.velocityX > -4) {
                 papa.velocityX += -2;
+            } else {
+                papa.velocityX = -4;
             }
         }
         if (keyH.down) {
@@ -94,17 +96,23 @@ public class GamePanel extends JPanel implements Runnable {
         if (keyH.right) {
             if (papa.velocityX < 4) {
                 papa.velocityX += 2;
+            } else {
+                papa.velocityX = 4;
             }
         }
         if (keyH.shift) {
             if (keyH.left) {
                 if (papa.velocityX > -6) {
                     papa.velocityX += -2;
+                } else {
+                    papa.velocityX = -6;
                 }
             }
             if (keyH.right) {
                 if (papa.velocityX < 6) {
                     papa.velocityX += 2;
+                } else {
+                    papa.velocityX = 6;
                 }
             }
         }
